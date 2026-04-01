@@ -10,5 +10,30 @@
   </head>
   <body>
     <div id="root"></div>
+<script>
+window.addEventListener("DOMContentLoaded", function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    if (code) {
+        const overlay = document.createElement('div');
+        overlay.style.position = 'absolute';
+        overlay.style.top = '15px';
+        overlay.style.right = '15px';
+        overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.75)';
+        overlay.style.color = '#ffffff';
+        overlay.style.padding = '10px 16px';
+        overlay.style.borderRadius = '8px';
+        overlay.style.fontFamily = 'monospace, sans-serif';
+        overlay.style.fontSize = '18px';
+        overlay.style.fontWeight = 'bold';
+        overlay.style.letterSpacing = '2px';
+        overlay.style.zIndex = '9999';
+        overlay.style.pointerEvents = 'none';
+        overlay.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
+        overlay.innerHTML = '<span style="font-size:11px; font-weight:normal; letter-spacing:0; color:#ddd; display:block; margin-bottom:4px;">事前アンケートで作成した匿名コード</span>' + code;
+        document.body.appendChild(overlay);
+    }
+});
+</script>
   </body>
 </html>

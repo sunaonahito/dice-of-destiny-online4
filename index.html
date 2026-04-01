@@ -14,25 +14,33 @@
 window.addEventListener("DOMContentLoaded", function() {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
-    if (code) {
-        const overlay = document.createElement('div');
-        overlay.style.position = 'absolute';
-        overlay.style.top = '15px';
-        overlay.style.right = '15px';
-        overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.75)';
-        overlay.style.color = '#ffffff';
-        overlay.style.padding = '10px 16px';
-        overlay.style.borderRadius = '8px';
-        overlay.style.fontFamily = 'monospace, sans-serif';
-        overlay.style.fontSize = '18px';
-        overlay.style.fontWeight = 'bold';
-        overlay.style.letterSpacing = '2px';
-        overlay.style.zIndex = '9999';
-        overlay.style.pointerEvents = 'none';
-        overlay.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
-        overlay.innerHTML = '<span style="font-size:11px; font-weight:normal; letter-spacing:0; color:#ddd; display:block; margin-bottom:4px;">事前アンケートで作成した匿名コード</span>' + code;
-        document.body.appendChild(overlay);
-    }
+    if (!code) return;
+
+    // Reactが画面を描画するまで1秒間に数回チェックする
+    const timer = setInterval(() => {
+        // 「例：」が含まれるか、または画面上の最初のinput要素を探す
+        const inputs = document.querySelectorAll('input[type="text"]');
+        let targetInput = inputs.length > 0 ? inputs[0] : null; // フォールバック
+
+        for (const input of inputs) {
+            if (input.placeholder && (input.placeholder.includes('0315') || input.placeholder.includes('例'))) {
+                targetInput = input;
+                break;
+            }
+        }
+
+        if (targetInput) {
+            clearInterval(timer); // 発見したらタイマー停止
+
+            // Reactのstate管理下にあるinput要素へ外部から値を強制セットするおまじない
+            const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+            nativeInputValueSetter.call(targetInput, code);
+            
+            // inputイベントを発火させてReactに値の変更を検知させる
+            const ev = new Event('input', { bubbles: true });
+            targetInput.dispatchEvent(ev);
+        }
+    }, 200); // 200ミリ秒ごとに探す
 });
 </script>
   </body>

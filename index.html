@@ -5,43 +5,10 @@
     <link rel="icon" type="image/svg+xml" href="/dice-of-destiny-online4/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + React + TS</title>
-    <script type="module" crossorigin src="/dice-of-destiny-online4/assets/index-C4dLqCCK.js"></script>
+    <script type="module" crossorigin src="/dice-of-destiny-online4/assets/index-DmO-WyNf.js"></script>
     <link rel="stylesheet" crossorigin href="/dice-of-destiny-online4/assets/index-C-cgeJ7G.css">
   </head>
   <body>
     <div id="root"></div>
-<script>
-window.addEventListener("DOMContentLoaded", function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-    if (!code) return;
-
-    // Reactが画面を描画するまで1秒間に数回チェックする
-    const timer = setInterval(() => {
-        // 「例：」が含まれるか、または画面上の最初のinput要素を探す
-        const inputs = document.querySelectorAll('input[type="text"]');
-        let targetInput = inputs.length > 0 ? inputs[0] : null; // フォールバック
-
-        for (const input of inputs) {
-            if (input.placeholder && (input.placeholder.includes('0315') || input.placeholder.includes('例'))) {
-                targetInput = input;
-                break;
-            }
-        }
-
-        if (targetInput) {
-            clearInterval(timer); // 発見したらタイマー停止
-
-            // Reactのstate管理下にあるinput要素へ外部から値を強制セットするおまじない
-            const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
-            nativeInputValueSetter.call(targetInput, code);
-            
-            // inputイベントを発火させてReactに値の変更を検知させる
-            const ev = new Event('input', { bubbles: true });
-            targetInput.dispatchEvent(ev);
-        }
-    }, 200); // 200ミリ秒ごとに探す
-});
-</script>
   </body>
 </html>
